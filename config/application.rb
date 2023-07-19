@@ -42,5 +42,10 @@ module WonderfulPostApp
       g.helper false
       g.test_framework false
     end
+
+    #デフォルトのlocaleを日本語(:ja)にする
+    config.i18n.default_locale = :ja
+    config.time_zone = "Asia/Tokyo"
+
   end
 end
