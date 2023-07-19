@@ -19,31 +19,30 @@ class ArticlesController < ApplicationController
   def edit
   end
 
-  # POST /articles
-  def create
-    @article = Article.new(article_params)
-    if @article.save
-      redirect_to @article, notice: "Article was successfully created."
-    else
-      render :new, status: :unprocessable_entity
-    end
+# POST /articles
+def create
+  @article = current_user.articles.new(article_params)
+  if @article.save
+    redirect_to @article, notice: "#{t('activerecord.models.article')}を作成しました。"
+  else
+    render :new, status: :unprocessable_entity
   end
+end
 
-  # PATCH/PUT /articles/1
-  def update
-    if @article.update(article_params)
-      redirect_to @article, notice: "Article was successfully updated."
-    else
-      render :edit, status: :unprocessable_entity
-    end
+# PATCH/PUT /articles/1
+def update
+  if @article.update(article_params)
+    redirect_to @article, notice: "#{t('activerecord.models.article')}を編集しました。"
+  else
+    render :edit, status: :unprocessable_entity
   end
+end
 
-  # DELETE /articles/1
-  def destroy
-    @article.destroy
-    edirect_to articles_url, notice: "Article was successfully destroyed."
-  end
-
+# DELETE /articles/1
+def destroy
+  @article.destroy
+  edirect_to articles_url, notice: "#{t('activerecord.models.article')}を削除しました。"
+end
   private
     def set_article
       @article = Article.find(params[:id])
