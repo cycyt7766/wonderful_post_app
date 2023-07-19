@@ -1,5 +1,5 @@
 class ArticlesController < ApplicationController
-  before_action :set_article, only: %i[ show edit update ]
+  before_action :set_article, only: %i[ show edit update destroy ]
 
   # GET /articles
   def index
@@ -38,11 +38,10 @@ class ArticlesController < ApplicationController
     end
   end
 
+  # DELETE /articles/1
   def destroy
-    # 対象のレコードを探す
-    @article = Article.find(params[:id])
-    @article.destroy!
-    render :show
+    @article.destroy
+    edirect_to articles_url, notice: "Article was successfully destroyed."
   end
 
   private
