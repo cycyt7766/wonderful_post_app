@@ -1,4 +1,7 @@
 class Article < ApplicationRecord
+  belongs_to :user
+  has_many :tag_articles
+  has_many :tags, through: :tag_articles
   with_options presence: true do
     validates :title
     validates :content
