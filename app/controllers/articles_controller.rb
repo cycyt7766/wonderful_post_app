@@ -4,7 +4,7 @@ class ArticlesController < ApplicationController
 
   # GET /articles
   def index
-    @articles = Article.all
+    @articles = Article.all.page params[:page]
   end
 
   # GET /articles/1
@@ -43,7 +43,7 @@ end
 # DELETE /articles/1
 def destroy
   @article.destroy
-  edirect_to articles_url, notice: "#{t('activerecord.models.article')}を削除しました。"
+  redirect_to articles_url, notice: "#{t('activerecord.models.article')}を削除しました。"
 end
   private
     def set_article
