@@ -1,4 +1,4 @@
 class TagArticle < ApplicationRecord
-  belongs_to :tag
-  belongs_to :article
+  belongs_to :tag, dependent: :destroy
+  belongs_to :article, dependent: :destroy
 end
