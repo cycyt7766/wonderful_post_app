@@ -17,6 +17,7 @@ class ArticlesController < ApplicationController
   # GET /articles/new
   def new
     @article = Article.new
+    @tags = Tag.all
   end
 
   # GET /articles/1/edit
@@ -26,7 +27,13 @@ class ArticlesController < ApplicationController
 # POST /articles
 def create
   @article = current_user.articles.new(article_params)
+  @tag_ids = params[:article][:tag_ids]
+  @tag_ids.shift
   if @article.save
+    @tag_ids.each do |tag_id|
+      tag = Tag.find(tag_id.to_i)
+      @article.tags << tag
+    end
     redirect_to @article, notice: "#{t('activerecord.models.article')}を作成しました。"
   else
     render :new, status: :unprocessable_entity
@@ -35,7 +42,13 @@ end
 
 # PATCH/PUT /articles/1
 def update
+  @tag_ids = params[:article][:tag_ids]
+  @tag_ids.shift
   if @article.update(article_params)
+    @tag_ids.each do |tag_id|
+      tag = Tag.find(tag_id.to_i)
+      @article.tags << tag
+    end
     redirect_to @article, notice: "#{t('activerecord.models.article')}を編集しました。"
   else
     render :edit, status: :unprocessable_entity
@@ -47,12 +60,14 @@ def destroy
   @article.destroy
   redirect_to articles_url, notice: "#{t('activerecord.models.article')}を削除しました。"
 end
+
   private
     def set_article
       @article = current_user.articles.find(params[:id])
+      @article.tags = Array.new
     end
 
     def article_params
-      params.require(:article).permit(:title, :content)
+      params.require(:article).permit(:title, :content, tag_ids:[])
     end
 end
